@@ -57,21 +57,79 @@ var trivia = {
 
     // Attributes
 
+    /*
+     * Function: called when time is up and user did not choose any answers
+     */
+    timeout: function() {
+
+        // Display time out message
+
+        // Display correct answer
+
+        // Display next question
+
+    },
+
+    /*
+     * Function: to display time count down by second
+     */
+    countdown: function() {
+
+        // Set internal 1 second. Keep updating display
+
+    },
 
     /*
      * Function: when "Start Game" is clicked
      */
+    start: function() {
+
+        // Remove start game button
+
+        // Display question and answers
 
 
+        // Display timer section and set timer, call timeout function at timeout
+
+        // Call countdown function to start count down by second
+
+    },
+
+    /*
+     * Function: when "Start Over" is clicked
+     */
+    restart: function() {
+
+    },
 
     /*
      * Function: when an answer is clicked
      */
+    answer: function() {
+
+        // stop timer and count down 
+
+        // If the answer is correct, display Yes  
+
+        // Else the answer is not correct, display No
+
+        // Increase current question number
+
+        // Display next question
+
+        // Set timer 
+
+
+    }
 }
 
 $(document).ready(function() {
 
     // Button Listeners
+    $(".start").on("click", function() {
+        trivia.start();
+    });
 
-})
+
+}) 
 
