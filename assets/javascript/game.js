@@ -58,6 +58,7 @@ var trivia = {
     // Attributes
     currentNo: 1,
     intervalID: 0,
+    timeoutID: 0,
     timeRemaining: 10,
 
     /*
@@ -65,10 +66,19 @@ var trivia = {
      */
     display: function() {
         
+        // Clear time out
+        clearTimeout(this.timeoutID);
+        clearInterval(this.intervalID);
+
+        trivia.timeRemaining = 10;
+        $(".question").empty();
+        $(".answersArea").empty();
+
 
         $(".time").text("Time Remaining: " + trivia.timeRemaining + " seconds.");
 
-        var questionNo = "q" + this.currentNo;
+        var questionNo = "q" + trivia.currentNo;
+console.log("questionNO: " + questionNo);
 
         $(".question").text(questions[questionNo].question);
 
@@ -76,7 +86,7 @@ var trivia = {
 
             var answerBtn = $("<div>");
             answerBtn.text(questions[questionNo].answers[i]);
-            answerBtn.attr("value", questions[questionNo].answers[i]);
+            answerBtn.attr("value", i);
             answerBtn.attr("class", "answerDiv");
             $(".answersArea").append(answerBtn);
         }
@@ -104,11 +114,20 @@ console.log("time out");
 
         clearInterval(this.intervalID);
 
+        var currentQuestion = questions["q"+this.currentNo];
+
         // Display time out message
+        $(".question").text("Time out!");
 
         // Display correct answer
+        $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);
+
+        // Increase current question number
+        this.currentNo++;
 
         // Display next question
+        this.timeoutID = setTimeout(this.display, 5000);
+
 
     },
 
@@ -144,13 +163,23 @@ console.log("time out");
     /*
      * Function: when an answer is clicked
      */
-    answer: function() {
+    answer: function(choice) {
+console.log("answered: " + choice);
 
         // stop timer and count down 
+        clearInterval(this.intervalID);
+        var currentQuestion = questions["q"+this.currentNo];
 
         // If the answer is correct, display Yes  
-
-        // Else the answer is not correct, display No
+        if (currentQuestion.correct == choice) {
+            console.log("correct");
+        }
+        // Else the answer is not correct
+        else {
+            $(".question").text("Nope!");
+            $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);
+        }
+        
 
         // Increase current question number
 
@@ -167,6 +196,12 @@ $(document).ready(function() {
     // Button Listeners
     $(".start").on("click", function() {
         trivia.start();
+    });
+
+    $(document).on("click", ".answerDiv", function() {        
+console.log("answer clicked");
+
+        trivia.answer($(this).attr("value"));
     });
 
 
