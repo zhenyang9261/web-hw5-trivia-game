@@ -52,7 +52,6 @@ var questions = [
     }
 ];
 
-
 var trivia = {
 
     // Attributes
@@ -65,7 +64,7 @@ var trivia = {
     unAnswered: 0,
 
     /*
-     * Function: to initialize attributes at the beginning of a game
+     * Function: to initialize attributes and clean up html fields at the beginning of a game
      */
     init: function() {
 
@@ -80,6 +79,7 @@ var trivia = {
 
         $(".question").empty();
         $(".answersArea").empty();
+        $("#image").attr("style", "display:none");
     },
 
     /*
@@ -94,7 +94,7 @@ var trivia = {
         // Stop the count down
         clearInterval(trivia.intervalID);
 
-        // Empty fields
+        // Empty question and answer fields
         $(".question").empty();
         $(".answersArea").empty();
 
@@ -105,14 +105,20 @@ var trivia = {
             case 0:
                 $(".question").text("Yes. Correct Answer!");
                 $(".answersArea").empty();
+                $("#image").attr("src" , "https://media.giphy.com/media/3NtY188QaxDdC/giphy.gif");
+                $("#image").attr("style", "display: inline-block");
                 break;
             case 1:
                 $(".question").text("Nope. Wrong Answer!");
-                $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);               
+                $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);     
+                $("#image").attr("src" , "https://media.giphy.com/media/WTjnWYENpLxS8JQ5rz/giphy.gif");
+                $("#image").attr("style", "display: inline-block");
                 break;
             case 2:
                 $(".question").text("Time out!");
                 $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);
+                $("#image").attr("src" , "https://media.giphy.com/media/14aUO0Mf7dWDXW/giphy.gif");
+                $("#image").attr("style", "display: inline-block");
                 break;
             default:
                 break;
@@ -121,16 +127,16 @@ var trivia = {
         // Increase current question number
         trivia.currentNo++;
 
-        // End of questions. Wait for 3 second to display summary and restart button
-        if (trivia.currentNo === (questions.length - 1))
-            trivia.timeoutID = setTimeout(trivia.gameover, 3000);
+        // End of questions. Wait for 4 seconds to display summary and restart button
+        if (trivia.currentNo === questions.length)
+            trivia.timeoutID = setTimeout(trivia.gameover, 4000);
         // Wait for 3 second to display next question
         else
-            trivia.timeoutID = setTimeout(trivia.displayQuestion, 3000);
+            trivia.timeoutID = setTimeout(trivia.displayQuestion, 4000);
     },
 
     /*
-     * Function: to display question at current position
+     * Function: to display current question 
      */
     displayQuestion: function() {
         
@@ -140,6 +146,7 @@ var trivia = {
         // Empty fields
         $(".question").empty();
         $(".answersArea").empty();
+        $("#image").attr("style", "display:none");
         
         // Reset time remaining
         trivia.timeRemaining = 10;
@@ -184,7 +191,6 @@ var trivia = {
 
         // Display question and answers
         trivia.displayQuestion();
-
     },
 
     /*
@@ -192,8 +198,12 @@ var trivia = {
      */
     gameover: function() {
 
+        // Clear the result image
+        $("#image").attr("style", "display:none");
+        
         $(".question").text("All Done! Here's how you did:")
 
+        // Display summary info
         $(".answersArea").empty();
         $(".answersArea").append("<p>Correct Answers: " + trivia.correctAnswer + "</p>");
         $(".answersArea").append("<p>Wrong Answers: " + trivia.wrongAnswer + "</p>");
@@ -213,7 +223,7 @@ var trivia = {
         
         var currentQuestion = questions[trivia.currentNo];
 
-        // If the answer is correct, display Yes  
+        // If the answer is correct
         if (currentQuestion.correct == choice) {
             trivia.correctAnswer++;
             trivia.displayResult(0);
