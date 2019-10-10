@@ -1,0 +1,49 @@
+body {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+}
+
+.content {
+    height: 80vh;
+    margin-top: 3rem;
+    background-color: white;
+    color: blueviolet;
+    text-align: center;
+}
+
+h1 {
+    margin: 2rem 0;
+}
+
+.start {
+    margin-top: 4rem;
+    padding: 1rem 3rem;
+    background-color: #e2b72b;
+    color: white;
+}
+
+.question, .time {
+    color: darkslategray;
+    text-align: center;
+    font-size: 1.5rem;
+
+}
+
+.answersArea {
+    text-align: center;
+    font-size: 1.3rem;   
+}
+
+.answerDiv {
+    width: 70%;
+    padding: 0.3rem 0.8rem;
+    margin: 0.8rem auto;
+    background-color: lightskyblue;
+    color: darkslategray;
+}
+
+.answerDiv:hover {
+    background-color: blueviolet;
+    color: white;
+    cursor: pointer;
+}
