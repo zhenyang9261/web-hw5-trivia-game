@@ -36,9 +36,9 @@ var questions = [
         correct: 2
     },
     {
-        question: "Which one of the following countries is not known as one of the Baltic states?",
-        answers: ["Albania", "Estonia", "Latvia", "Lithuania"],
-        correct: 0
+        question: "Which of the following vegetables is not one of the ingredients of V-8 juice?",
+        answers: ["Beet", "Carrot", "Spinach", "Cabbage"],
+        correct: 3
     },
     {
         question: "Which two planets are most similar in size diameter wise?",
@@ -65,6 +65,24 @@ var trivia = {
     unAnswered: 0,
 
     /*
+     * Function: to initialize attributes at the beginning of a game
+     */
+    init: function() {
+
+        trivia.currentNo = 0;
+        trivia.timeRemaining = 10;
+        trivia.correctAnswer = 0;
+        trivia.wrongAnswer = 0;
+        trivia.unAnswered = 0;
+        
+        clearInterval(trivia.intervalID);
+        clearTimeout(trivia.timeoutID);
+
+        $(".question").empty();
+        $(".answersArea").empty();
+    },
+
+    /*
      * Function: to display the result after one question
      * Input param: 
      * - 0: correct answer
@@ -82,6 +100,7 @@ var trivia = {
 
         var currentQuestion = questions[trivia.currentNo];
 
+        // Display information based on result code input
         switch (result) {
             case 0:
                 $(".question").text("Yes. Correct Answer!");
@@ -116,17 +135,17 @@ var trivia = {
     displayQuestion: function() {
         
         // Clear time out
-        if(trivia.timeoutID != 0) {
-            clearTimeout(trivia.timeoutID);
-                // Empty fields
-            $(".question").empty();
-            $(".answersArea").empty();
-        }
+        clearTimeout(trivia.timeoutID);
+                
+        // Empty fields
+        $(".question").empty();
+        $(".answersArea").empty();
         
+        // Reset time remaining
         trivia.timeRemaining = 10;
-        
         $(".time").text("Time Remaining: " + trivia.timeRemaining + " seconds.");
 
+        // Display questino and multiple choices
         $(".question").text(questions[trivia.currentNo].question);
 
         for (var i=0; i<questions[trivia.currentNo].answers.length; i++) {
@@ -140,18 +159,16 @@ var trivia = {
 
         // Start count down by second
         trivia.intervalID = setInterval(function() {
-        
             trivia.timeRemaining--;
 
             $(".time").text("Time Remaining: " + trivia.timeRemaining + " seconds.");
 
+            // Time out. Display result
             if (trivia.timeRemaining === 0) {
                 trivia.unAnswered++;
                 trivia.displayResult(2); 
             }
-
         }, 1000);
-
     },
 
     /*
@@ -159,10 +176,8 @@ var trivia = {
      */
     start: function() {
 
-        trivia.unAnswered = 0;
-        trivia.correctAnswer = 0;
-        trivia.wrongAnswer = 0;
-        trivia.currentNo = 0;
+        // Initialize 
+        trivia.init();
 
         // Hide start game button
         $(".start").attr("style", "display:none");
@@ -185,7 +200,7 @@ var trivia = {
         $(".answersArea").append("<p>Unanswered: " + trivia.unAnswered + "</p>");
 
         $(".start").text("Restart Game");
-        $(".start").attr("style", "display:block");
+        $(".start").attr("style", "display:inline-block");
     },
 
     /*
@@ -197,7 +212,6 @@ var trivia = {
         clearInterval(trivia.intervalID);
         
         var currentQuestion = questions[trivia.currentNo];
-console.log("correct answer: " + currentQuestion.correct + "  you chose: " + choice);
 
         // If the answer is correct, display Yes  
         if (currentQuestion.correct == choice) {
@@ -222,7 +236,5 @@ $(document).ready(function() {
     $(document).on("click", ".answerDiv", function() {   
         trivia.answer($(this).attr("value"));
     });
-
-
 }) 
 
