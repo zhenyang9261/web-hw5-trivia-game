@@ -83,7 +83,7 @@ var trivia = {
     },
 
     /*
-     * Function: to display the result after one question
+     * Function: to display the result after each question
      * Input param: 
      * - 0: correct answer
      * - 1: wrong answer
@@ -102,35 +102,38 @@ var trivia = {
 
         // Display information based on result code input
         switch (result) {
-            case 0:
+            case 0:  // correct
                 $(".question").text("Yes. Correct Answer!");
                 $(".answersArea").empty();
                 $("#image").attr("src" , "https://media.giphy.com/media/3NtY188QaxDdC/giphy.gif");
+                $("#image").attr("alt" , "giphy automated gif - win");
                 $("#image").attr("style", "display: inline-block");
                 break;
-            case 1:
+            case 1:  // wrong
                 $(".question").text("Nope. Wrong Answer!");
                 $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);     
                 $("#image").attr("src" , "https://media.giphy.com/media/WTjnWYENpLxS8JQ5rz/giphy.gif");
+                $("#image").attr("alt" , "giphy automated gif - lose");
                 $("#image").attr("style", "display: inline-block");
                 break;
-            case 2:
+            case 2:  // time out
                 $(".question").text("Time out!");
                 $(".answersArea").text("The correct answer was: " + currentQuestion.answers[currentQuestion.correct]);
                 $("#image").attr("src" , "https://media.giphy.com/media/14aUO0Mf7dWDXW/giphy.gif");
+                $("#image").attr("alt" , "giphy automated gif - time out");
                 $("#image").attr("style", "display: inline-block");
                 break;
-            default:
+            default:  // this shouldn't happen
                 break;
         }
 
         // Increase current question number
         trivia.currentNo++;
 
-        // End of questions. Wait for 4 seconds to display summary and restart button
+        // If end of questions. Wait for 4 seconds to display summary and restart button
         if (trivia.currentNo === questions.length)
             trivia.timeoutID = setTimeout(trivia.gameover, 4000);
-        // Wait for 3 second to display next question
+        // Else wait for 3 seconds to display next question
         else
             trivia.timeoutID = setTimeout(trivia.displayQuestion, 4000);
     },
@@ -166,8 +169,9 @@ var trivia = {
 
         // Start count down by second
         trivia.intervalID = setInterval(function() {
-            trivia.timeRemaining--;
 
+            // Decrease 1 (second)
+            trivia.timeRemaining--;
             $(".time").text("Time Remaining: " + trivia.timeRemaining + " seconds.");
 
             // Time out. Display result
@@ -183,7 +187,7 @@ var trivia = {
      */
     start: function() {
 
-        // Initialize 
+        // Initialize object attributes and clean up HTML page fields
         trivia.init();
 
         // Hide start game button
@@ -209,6 +213,7 @@ var trivia = {
         $(".answersArea").append("<p>Wrong Answers: " + trivia.wrongAnswer + "</p>");
         $(".answersArea").append("<p>Unanswered: " + trivia.unAnswered + "</p>");
 
+        // Display button to restart the game
         $(".start").text("Restart Game");
         $(".start").attr("style", "display:inline-block");
     },
