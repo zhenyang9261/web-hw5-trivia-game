@@ -26,12 +26,13 @@ h1 {
     color: darkslategray;
     text-align: center;
     font-size: 1.5rem;
-
+    margin-top: 1rem;
 }
 
 .answersArea {
     text-align: center;
     font-size: 1.3rem;   
+    margin-top: 1rem;
 }
 
 .answerDiv {
